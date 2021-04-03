@@ -8,3 +8,9 @@ test("Checking the Manager object", () => {
     expect(person.email).toEqual(expect.any(String));
     expect(person.officeNumber).toEqual(expect.any(Number));
 })
+
+test("testing getRole(), should return 'Manager'", () => {
+    const person = new Manager('Greg', 6, 'greg@batman.com', 123);
+
+    expect(person.getRole()).toBe('Manager');
+})
