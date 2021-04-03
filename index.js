@@ -1,9 +1,14 @@
 const fs = require('fs');
+const path = require('path');
 const inquirer = require('inquirer');
-const Employee = require('./lib/Employee')
 const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
 const Manager = require('./lib/Manager');
+
+ const distDir = path.resolve(__dirname, './dist');
+ const distPath = path.join(distDir, 'team.html');
+
+ const layout = require('./lib/Layout');
 
 const employees = [];
 
@@ -69,7 +74,6 @@ function createEmployee() {
             }
         ])
         .then(managerResponse => {
-            console.log(managerResponse)
             const manager =  new Manager(managerResponse.name, managerResponse.id, managerResponse.email, managerResponse.officeNumber)
             employees.push(manager);
 
@@ -223,10 +227,16 @@ function createEmployee() {
                         } else {
                             //Exit Inquirer and write files here. 
                             console.log(employees);
+                            const html = layout(employees)
+                            fs.writeFile(distPath, html, err => {
+                                if(err) throw new Error(err);
+                            })
+
+                            console.log("Your team has been created!");
                         }
                     })
             }
         })
-}
+};
 
 createEmployee();
